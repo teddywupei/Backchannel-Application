@@ -1,0 +1,27 @@
+<%= form_for(@post) do |f| %>
+
+  <% if(( User.find_by_name(session[:user_name]).admin_flag == 1) || (session[:user_name] == @post.creator_id)) %>
+
+    <% if @post.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
+
+          <ul>
+            <% @post.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+
+    <div class="field">
+      <%= f.label :message %><br />
+      <%= f.text_area :message %>
+    </div>
+    <div class="actions">
+      <%= f.submit %>
+    </div>
+  <% else %>
+    <h2>Only administrators or users can access this page.</h2>
+  <% end %>
+<% end %>

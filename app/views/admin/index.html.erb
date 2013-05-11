@@ -1,0 +1,16 @@
+<h1>Welcome</h1>
+
+<% if User.find_by_name(session[:user_name]).admin_flag != nil %>
+
+It's <%= Time.now %>
+We have <%= pluralize(@total_posts, "post") %>.
+<br><br>
+<%= link_to "Show all categories", categories_url %>
+<br>
+<%= link_to "Show all posts", posts_url %>
+<br>
+<%= link_to "Show all users", users_url %>
+
+<% end %>
+
+<br>

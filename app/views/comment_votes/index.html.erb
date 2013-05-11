@@ -1,0 +1,35 @@
+<h1>Listing comment_votes</h1>
+
+<table>
+  <tr>
+    <th>Voter</th>
+    <th>Comment</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @comment_votes.each do |comment_vote| %>
+  <tr>
+    <% if ((session[:user_name] == nil) ||(User.find_by_name(session[:user_name]).admin_flag != 1) || (session[:user_name] != user.name)) %>
+    <td><%= comment_vote.voter_id %></td>
+    <td><%= comment_vote.comment_id %></td>
+    <td><%= link_to 'Show', comment_vote %></td>
+    <% else %>
+    <td><%= comment_vote.voter_id %></td>
+    <td><%= comment_vote.comment_id %></td>
+    <td><%= link_to 'Show', comment_vote %></td>
+    <td><%= link_to 'Destroy', comment_vote, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    <% end %>
+  </tr>
+<% end %>
+</table>
+
+<br />
+  <tr>
+  <% if ((session[:user_name] == nil) ) %>
+  Please <%= link_to 'log in', new_session_path %> to vote for this comment. :)
+  <% else %>
+  <%= link_to 'New Comment vote', new_comment_vote_path %>
+  <% end %>
+  </tr>

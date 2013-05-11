@@ -1,0 +1,28 @@
+<%= form_for(@comment) do |f| %>
+    <% if @comment.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@comment.errors.count, "error") %> prohibited this comment from being saved:</h2>
+
+          <ul>
+            <% @comment.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+
+  <% if(( User.find_by_name(session[:user_name]).admin_flag != nil) || (session[:user_name] == @comment.creator_id)) %>
+
+
+    </div>
+    <div class="field">
+      <%= f.label :content %><br />
+      <%= f.text_area :content %>
+    </div>
+    <div class="actions">
+      <%= f.submit %>
+    </div>
+  <% else %>
+    <h2>Only administrators or creators can access this page.</h2>
+  <% end %>
+<% end %>

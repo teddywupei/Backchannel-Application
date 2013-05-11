@@ -1,0 +1,76 @@
+<h1>Listing users</h1>
+<p id="notice"><%= notice %></p>
+<table>
+  <tr>
+    <th>Name</th>
+    <% if ((User.find_by_name(session[:user_name])== nil)) %>
+        <th></th>
+        <th></th>
+        <th></th>
+    <% else %>
+        <th>Administrator</th>
+        <th>Number of posts</th>
+        <th>Votes</th>
+
+    <% end %>
+    <th></th>
+    <th></th>
+    <th></th>
+
+  </tr>
+
+  <% @users.each do |user| %>
+      <tr>
+
+        <td><%= user.name %></td>
+
+        <% if ((session[:user_name] == nil) || ((User.find_by_name(session[:user_name]).admin_flag != 1)) && (session[:user_name] != user.name)) %>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><%= link_to 'Show posts', user %></td>
+            <td></td>
+            <td></td>
+        <% else %>
+            <% if user.admin_flag != 1 %>
+              <td>Not an administrator</td>
+            <% else %>
+              <td>An administrator</td>
+            <% end %>
+
+            <% if Post.find_all_by_creator_id(user.name) != nil %>
+              <td><%= Post.find_all_by_creator_id(user.name).size %></td>
+            <% else %>
+              <td>0</td>
+            <% end %>
+
+            <% if Post.find_all_by_creator_id(user.name) != nil %>
+              <% total_num_post_votes = 0 %>
+              <% Post.find_all_by_creator_id(user.name).each do |post| %>
+                <%  total_num_post_votes += post.post_votes.size %>
+              <% end %>
+              <td><%= total_num_post_votes %></td>
+            <% else %>
+              <td>0</td>
+            <% end %>
+            <% if((session[:user_name] == nil) || ((User.find_by_name(session[:user_name]).admin_flag != 1) && (session[:user_name] != user.name))) %>
+            <td><%= link_to 'Show posts', user %></td>
+            <% else %>
+            <td><%= link_to 'Show posts', user %></td>
+            <td><%= link_to 'Edit', edit_user_path(user) %></td>
+            <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <%end%>
+        <% end %>
+
+  <% end %>
+
+  </tr>
+
+</table>
+<b>Search</b>
+<%= form_tag users_path, :method => 'get' do %>
+    <p>
+      <%= text_field_tag :search, params[:search] %><br/>
+      <%= submit_tag "Users", :name => nil %><br/>
+    </p>
+<% end %>

@@ -1,0 +1,109 @@
+<h1>Listing posts</h1>
+
+<table>
+  <tr>
+    <th>Creator</th>
+    <th>Message</th>
+    <th>Category</th>
+    <th>Modified date</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+ <% if (@posts.empty?) %>
+  <tr></tr>
+ <% else %>
+  <% prev_max_date = Date.tomorrow %>
+
+  <% @unique_dates = [@posts.first] %>
+  <% @posts.each do |post| %>
+
+    <% found = false %>
+    <% @unique_dates.each do |post2| %>
+      <% if post2.modified_date == post.modified_date %>
+        <% found = true %>
+      <% end %>
+    <% end %>
+    <% if found == false %>
+      <% @unique_dates << post %>
+    <% end %>
+  <% end %>
+
+      <% for i in 0..(@unique_dates.length-1) %>
+          <tr>
+            <% @posts_current = [@posts.first] %>
+            <% post_current = @posts.first %>
+            <% max_date = Date.new %>
+            <% @posts.each do |post2| %>
+                <% if ((post2.modified_date > max_date) && (post2.modified_date < prev_max_date)) %>
+                    <% #if ((post2.modified_time > max_time) && (post2.modified_time < prev_max_time)) %>
+                    <% @posts_current = [post2] %>
+                    <% @posts.each do |post3| %>
+                        <% #@posts_current = Post.find_all_by_modified_date(post2.modified_date) %>
+                        <% if ((post3.modified_date == post2.modified_date) && (post3 != post2)) %>
+                            <% @posts_current << post3 %>
+                        <% end %>
+                    <% end %>
+                    <% #end %>
+                    <% max_date = post2.modified_date %>
+                    <% #max_time = post2.modified_time %>
+                <% end %>
+            <% end %>
+
+            <% prev_max_time = Time.now %>
+
+            <% for i in 0 .. (@posts_current.length-1) do %>
+                <% max_time = Time.new(1, 1, 1, 1, 1) %>
+                <% @posts_current.each do |post2| %>
+                    <% if ((post2.modified_time > max_time) && (post2.modified_time < prev_max_time)) %>
+                        <% post_current = post2 %>
+                        <% max_time = post2.modified_time %>
+                    <% end %>
+                <% end %>
+                <% prev_max_time = max_time %>
+
+                <% if post_current.modified_date != nil %>
+                    <td><%= post_current.creator_id %></td>
+                    <td><%= post_current.message %></td>
+                    <td><%= post_current.category.name %></td>
+                    <td><%= post_current.modified_date %> <%= post_current.modified_time.strftime('%H:%M:%S') %></td>
+                    <% if((session[:user_name] == nil) || ((User.find_by_name(session[:user_name]).admin_flag != 1) && (session[:user_name] != post_current.creator_id))) %>
+                        <td><%= link_to 'Show', post_current %></td>
+                        <td></td>
+                        <td></td>
+                    <% else %>
+                        <td><%= link_to 'Show', post_current %></td>
+                        <td><%= link_to 'Edit', edit_post_path(post_current) %></td>
+                        <td><%= link_to 'Destroy', post_current, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                    <% end %>
+                <% else %>
+                    <td></td>
+                <% end %>
+                </tr>
+
+            <% end %>
+
+
+            <% prev_max_date = max_date %>
+
+      <% end %>
+  <% end %>
+</table>
+
+<br />
+<% if ((session[:user_name] == nil)) %>
+    <td>Please <%= link_to 'log in', new_session_path %> to write a comment and vote for this comment. :)</td>
+<% else %>
+<%= link_to 'New Post', new_post_path %>
+<% end %>
+
+<br />
+
+<b>Search</b>
+<%= form_tag posts_path, :method => 'get' do %>
+    <p>
+      <%= text_field_tag :search, params[:search] %><br/>
+      <%= submit_tag "Posts", :name => nil %><br/>
+    </p>
+<% end %>

@@ -1,0 +1,28 @@
+<h1>Listing post_votes</h1>
+
+<table>
+  <tr>
+    <th>Voter</th>
+    <th>Post</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @post_votes.each do |post_vote| %>
+  <tr>
+    <td><%= post_vote.voter_id %></td>
+    <td><%= post_vote.post_id %></td>
+    <% if ((session[:user_name] == nil) || ((User.find_by_name(session[:user_name]).admin_flag != 1) && (session[:user_name] != post_vote.voter_id))) %>
+        <td><%= link_to 'Show', post_vote %></td>
+   <% else %>
+    <td><%= link_to 'Show', post_vote %></td>
+    <td><%= link_to 'Destroy', post_vote, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+   <% end %>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'Back to posts', posts_path %>

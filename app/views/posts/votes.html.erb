@@ -1,0 +1,14 @@
+<h1>Voters</h1>
+
+<p>
+  <% if @post.post_votes.size > 0 %>
+      <% @post.post_votes.each do |vote| %>
+          <%= vote.voter_id %>
+          <br>
+      <% end %>
+
+  <% end %>
+</p>
+
+<%= link_to 'Back', posts_path + '/' + @post.id.to_s %>
+

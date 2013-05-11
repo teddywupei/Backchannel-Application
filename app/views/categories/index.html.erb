@@ -1,0 +1,41 @@
+<h1>Listing categories</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @categories.each do |category| %>
+  <tr>
+    <td><%= category.name %></td>
+    <% if ((session[:user_name] == nil) || (User.find_by_name(session[:user_name]).admin_flag != 1)) %>
+        <td><%= link_to 'Show posts', category %></td>
+    <% else %>
+        <td><%= link_to 'Show posts', category %></td>
+        <td><%= link_to 'Edit', edit_category_path(category) %></td>
+        <td><%= link_to 'Destroy', category, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    <% end %>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<% if( (User.find_by_name(session[:user_name]) != nil) && (User.find_by_name(session[:user_name]).admin_flag == 1 )) %>
+    <%= link_to 'New Category', new_category_path %>
+<% end %>
+
+<%= link_to 'List of Posts',posts_path %>
+
+<br />
+
+<b>Search</b>
+<%= form_tag categories_path, :method => 'get' do %>
+    <p>
+      <%= text_field_tag :search, params[:search] %><br/>
+      <%= submit_tag "Categories", :name => nil %><br/>
+    </p>
+<% end %>

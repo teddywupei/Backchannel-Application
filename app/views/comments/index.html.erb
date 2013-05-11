@@ -1,0 +1,27 @@
+<h1>Listing comments</h1>
+
+<table>
+  <tr>
+    <th>Post</th>
+    <th>Content</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @comments.each do |comment| %>
+  <tr>
+    <td><%= comment.post_id %></td>
+    <td><%= comment.content %></td>
+    <% if((session[:user_name] == nil) || ((User.find_by_name(session[:user_name]).admin_flag != 1) && (session[:user_name] != comment.post_id))) %>
+    <td><%= link_to 'Show', comment %></td>
+    <% else %>
+    <td><%= link_to 'Show', comment %></td>
+    <td><%= link_to 'Edit', edit_comment_path(comment) %></td>
+    <td><%= link_to 'Destroy', comment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    <% end %>
+  </tr>
+<% end %>
+</table>
+
+<br />

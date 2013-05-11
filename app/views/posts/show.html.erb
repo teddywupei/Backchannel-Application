@@ -1,0 +1,97 @@
+<p id="notice"><%= notice %></p>
+
+<table>
+  <tr>
+  <th> Votes </th>
+  <th> Post </th>
+
+
+  </tr>
+  <tr>
+
+    <td>
+      <p>
+        <% if ((@post.post_votes == nil) || (@post.post_votes.find_all_by_voter_id(session[:user_name]).empty?)) %>
+          <%= link_to @post.post_votes.size, votes_post_path(@post) %> other people voted
+        <% else %>
+          You and <%= link_to @post.post_votes.size - 1, votes_post_path(@post) %> other people voted
+        <% end %>
+      </p>
+    </td>
+    <td>
+<p>
+  <b>Creator:</b>
+  <%= @post.creator_id %>
+</p>
+
+<p>
+  <b>Message:</b>
+  <%= @post.message %>
+</p>
+
+<p>
+  <b>Category:</b>
+  <%= @post.category[:name] %>
+</p>
+
+<p>
+  <b>Modified date:</b>
+  <%= @post.modified_date %> <%= @post.modified_time.strftime('%H:%M:%S') %>
+
+
+    </p>
+
+<p>
+
+  <% if @post.comments.size > 0 %>
+    <table>
+    <tr>
+      <th>Comments</th>
+      <th>Votes</th>
+     <th></th>
+     <th></th>
+     <th></th>
+    </tr>
+
+     <% @post.comments.each do |comment| %>
+       <tr>
+         <td><%= comment.content %></td>
+         <td>
+           <% if ((comment.comment_votes == nil) || (comment.comment_votes.find_all_by_voter_id(session[:user_name]).empty?)) %>
+             <%= link_to comment.comment_votes.size, votes_comment_path(comment) %> other people voted
+           <% else %>
+             You and <%= link_to comment.comment_votes.size - 1, votes_comment_path(comment) %> other people voted
+           <% end %>
+
+         </td>
+         <% if((session[:user_name] == nil) || ((User.find_by_name(session[:user_name]).admin_flag != 1) && (session[:user_name] != @post.creator_id))) %>
+         <td><%= link_to 'Show', comment %></td>
+         <% else %>
+         <td><%= link_to 'Show', comment %></td>
+         <td><%= link_to 'Edit', edit_comment_path(comment) %></td>
+         <td><%= link_to 'Destroy', comment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+         <% end %>
+       </tr>
+    <% end %>
+    </table>
+  <% end %>
+</p>
+    </td>
+
+  </tr>
+
+</table>
+<br><br>
+
+<% if ((session[:user_name] == nil) ) %>
+    <td>Please <%= link_to 'log in', new_session_path %> to write a comment and vote for this comment. :)</td>
+<% else %>
+    <td><%= link_to 'Write a comment', new_comment_path %> | </td>
+    <td><%= link_to 'Vote', new_post_vote_path %>| </td>
+    <td><%= link_to 'Edit', edit_post_path(@post) %> </td>
+<% end %>
+
+<br><br>
+
+<%= link_to 'Back', posts_path %>
+

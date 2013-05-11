@@ -1,0 +1,15 @@
+<h1>Voters</h1>
+
+<p>
+  <% if @comment.comment_votes.size > 0 %>
+      <% @comment.comment_votes.each do |vote| %>
+          <%= vote.voter_id %>
+          <br>
+      <% end %>
+
+  <% end %>
+</p>
+
+<%= link_to 'Back', comments_path + '/' + @comment.id.to_s %>
+
+

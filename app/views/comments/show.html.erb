@@ -1,0 +1,37 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Comment</h1>
+
+<table>
+  <tr>
+    <th> Votes </th>
+    <th> Comment </th>
+
+  </tr>
+  <tr>
+
+  <td>
+   <p>
+    <% if ((@comment.comment_votes == nil) || (@comment.comment_votes.find_all_by_voter_id(session[:user_name]).empty?)) %>
+      <%= link_to @comment.comment_votes.size, votes_comment_path(@comment) %> other people voted
+    <% else %>
+      You and <%= link_to @comment.comment_votes.size - 1, votes_comment_path(@comment) %> other people voted
+    <% end %>
+  </p>
+  </td>
+
+    <td>
+
+<p>
+  <%= @comment.content %>
+</p>
+    </td>
+</tr>
+</table>
+  <br />
+<% if ((session[:user_name] == nil)) %>
+    Please <%= link_to 'log in', new_session_path %> to vote for this comment. :)
+<% else %>
+    <%= link_to 'Vote', new_comment_vote_path %>
+<% end %>  <br>
+<%= link_to 'Back', comments_path %>

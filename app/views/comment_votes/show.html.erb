@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Voter:</b>
+  <%= @comment_vote.voter_id %>
+</p>
+
+<p>
+  <b>Comment:</b>
+  <%= @comment_vote.comment_id %>
+</p>
+
+
+<%= link_to 'Back to comment votes', comment_votes_path %>
+<%= link_to 'Back to posts', posts_path %>

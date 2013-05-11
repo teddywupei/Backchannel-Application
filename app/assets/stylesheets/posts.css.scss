@@ -1,0 +1,36 @@
+// Place all the styles related to the Posts controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+p {
+  color: #000000;
+//  background-color: #d3d3d3;
+}
+
+h1 {
+  color: navy;
+
+}
+
+b {
+  color: navy;
+}
+
+th {
+  color: black;
+  border-bottom: dotted;
+
+}
+
+table {
+
+  background-color: #d3d3d3;
+  border: double;
+//  padding: 20px;
+  border-spacing: 10px;
+  border-color: navy;
+}
+
+textarea {
+  color: #000000;
+}

@@ -1,0 +1,25 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  creator_id: MyString1
+  modified_date: 2012-09-17
+  message: MyText1
+  comments: MyText1
+
+two:
+  creator_id: MyString2
+  modified_date: 2012-09-17
+  message: MyText1
+  comments: MyText2
+
+three:
+  creator_id: MyString3
+  modified_date: 2012-09-17
+  message: MyText3
+  comments: MyText3
+
+four:
+  creator_id: MyString4
+  modified_date: 2012-09-17
+  message: MyText4
+  comments: MyText4

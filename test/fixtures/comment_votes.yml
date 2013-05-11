@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  voter_id: MyString1
+  comment_id: 1
+
+two:
+  voter_id: MyString2
+  comment_id: 2
+
+three:
+  voter_id: MyString3
+  comment_id: 3
+
+four:
+  voter_id: MyString3
+  comment_id: 3

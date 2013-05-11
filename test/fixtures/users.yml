@@ -1,0 +1,12 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+<% SALT = "NaCl" unless defined?(SALT) %>
+
+one:
+  name: boss
+  hashed_password: <%= User.encrypt_password('boss', SALT) %>
+  salt: <%= SALT %>
+
+two:
+  name: name2
+  hashed_password: <%= User.encrypt_password('name2', SALT) %>
+  salt: <%= SALT %>

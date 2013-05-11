@@ -1,0 +1,44 @@
+<%= form_for(@user) do |f| %>
+  <% if(( User.find_by_name(session[:user_name]).admin_flag ==1) || (session[:user_name] == @user.name)) %>
+    <% if @user.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+
+          <ul>
+            <% @user.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+
+    <fieldset>
+      <legend>Enter User Details</legend>
+      If you don't want to change user's password, just leave the following two blanks empty.
+
+      <div class="field">
+        <%= f.label :password, 'New Password (Optional)' %><br />
+        <%= f.text_field :password %>
+      </div>
+      <div class="field">
+        <%= f.label :password_confirmation, 'Confirm (Optional)' %><br />
+        <%= f.text_field :password_confirmation %>
+      </div>
+
+      <% if(( User.find_by_name(session[:user_name]).admin_flag ==1) && (@user.name != 'boss'))  %>
+
+          <div class="field">
+            <%= f.label 'Administrator' %>
+            <%= select("user", "admin_flag", { 'true' => 1, 'false' => 0 } ) %>
+          </div>
+      <% end %>
+
+      <div class="actions">
+        <%= f.submit %>
+      </div>
+    </fieldset>
+  <% else %>
+        <h2>Only administrators or creators can access this page.</h2>
+  <% end %>
+
+<% end %>
